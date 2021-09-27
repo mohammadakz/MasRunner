@@ -1,12 +1,15 @@
 import React from "react";
 import styled from "styled-components";
 import { BrowserRouter, Switch, Route } from "react-router-dom";
-
+import GlobalStyles from "./GlobalStyles";
 import Home from "./Home";
+import Header from "./Header";
 
 const App = () => {
   return (
     <BrowserRouter>
+      <GlobalStyles />
+      <Header />
       <Main>
         <Switch>
           <Route exact path="/">
@@ -19,10 +22,11 @@ const App = () => {
 };
 
 const Main = styled.div`
-  background: var(--color-orange);
+  background: var(--color-blue);
   display: flex;
   flex-direction: column;
-  height: calc(100vh - 110px);
+  height: 100vh;
+  overflow: auto;
 `;
 
 export default App;
