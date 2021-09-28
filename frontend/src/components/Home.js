@@ -7,21 +7,34 @@ import LeaderBoard from "./LeaderBoard";
 const Home = () => {
   const history = useHistory();
   const {
-    actions: { loginUser },
+    state: { userInfo },
+    actions: { loginUser, getUserInfo },
   } = React.useContext(LoggedinContext);
   React.useEffect(() => {
     if (window.location.hash) {
-      window.localStorage.setItem(
-        "acc",
-        window.location.hash.split("&")[0].slice(14)
-      );
-      loginUser(true);
-      history.push("/");
+      const accToken = window.location.hash.split("&")[0].slice(14);
+      window.localStorage.setItem("acc", accToken);
+
+      fetch("https://api.fitbit.com/1/user/-/profile.json", {
+        headers: { Authorization: `Bearer ${accToken}` },
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          fetch("/user", {
+            method: "POST",
+            body: JSON.stringify(data),
+            headers: {
+              Accept: "application/json",
+              "Content-Type": "application/json",
+            },
+          });
+        });
     }
+    history.push("/");
   }, []);
 
   React.useEffect(() => {
-    if (localStorage.getItem("acc")) {
+    if (localStorage.getItem("acc") !== "") {
       loginUser(true);
     }
   }, []);

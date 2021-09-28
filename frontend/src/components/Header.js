@@ -4,13 +4,25 @@ import { LoggedinContext } from "./Context/UserContext";
 import { FiLogIn } from "react-icons/fi";
 const Header = () => {
   const {
-    state: { login },
+    state: { login, userInfo },
+    actions: { loginUser },
   } = React.useContext(LoggedinContext);
-  const clickHandler = () => {
-    window.location.replace(
-      "https://www.fitbit.com/oauth2/authorize?client_id=23BCTT&redirect_uri=http://localhost:3000&response_type=token&scope=activity+nutrition+heartrate+location+nutrition+profile+settings+sleep+social+weight&state"
-    );
+  const clickHandler = (e) => {
+    e.preventDefault();
+
+    if (!login) {
+      window.location.replace(
+        "https://www.fitbit.com/oauth2/authorize?client_id=23BCTT&redirect_uri=http://localhost:3000&response_type=token&scope=activity+nutrition+heartrate+location+nutrition+profile+settings+sleep+social+weight&state"
+      );
+    }
+
+    if (login) {
+      localStorage.setItem("acc", "");
+    }
+    loginUser(!login);
   };
+
+  console.log("userInfo", userInfo);
   return (
     <Wrapper>
       <StyledTitle>MasRunner</StyledTitle>
@@ -47,7 +59,7 @@ const StyledButton = styled.button`
   border: 0.2rem solid #308af1;
   border-radius: 0.5rem;
   background: none;
-  align-items: center ;
+  align-items: center;
   padding: 1rem;
   cursor: pointer;
   &:hover {

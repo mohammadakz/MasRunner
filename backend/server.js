@@ -3,7 +3,7 @@
 // import the needed node_modules.
 const express = require("express");
 const morgan = require("morgan");
-const { handler } = require("./handlers");
+const { postUserInfo } = require("./handlers");
 
 express()
   // Below are methods that are included in express(). We chain them for convenience.
@@ -20,7 +20,7 @@ express()
   // ---------------------------------
   // add new endpoints here 👇
   //
-  .post("/endpoint", handler)
+  .post("/user", postUserInfo)
 
   //
   // add new endpoints here ☝️

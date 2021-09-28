@@ -4,6 +4,7 @@ export const LoggedinContext = React.createContext();
 
 const initialState = {
   login: false,
+  userInfo: {},
 };
 
 function reducer(state, action) {
@@ -12,6 +13,12 @@ function reducer(state, action) {
       return {
         ...state,
         login: true,
+      };
+    }
+    case "userdata": {
+      return {
+        ...state,
+        userInfo: action.userData,
       };
     }
   }
@@ -24,6 +31,9 @@ export const LoggedInProvider = ({ children }) => {
   const loginUser = (login) => {
     dispatch({ type: "loggedin", login });
   };
+  const getUserInfo = (userData) => {
+    dispatch({ type: "userdata", userData });
+  };
 
   return (
     <LoggedinContext.Provider
@@ -31,6 +41,7 @@ export const LoggedInProvider = ({ children }) => {
         state,
         actions: {
           loginUser,
+          getUserInfo,
         },
       }}
     >
