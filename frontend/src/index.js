@@ -1,10 +1,12 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import App from "./components/App";
-
+import App from "./Components/App";
+import { LoggedInProvider } from "./Components/Context/UserContext";
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <LoggedInProvider>
+      <App />
+    </LoggedInProvider>
   </React.StrictMode>,
   document.getElementById("root")
 );
