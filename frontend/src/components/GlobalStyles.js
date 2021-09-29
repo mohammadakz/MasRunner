@@ -4,7 +4,7 @@ export default createGlobalStyle`
   :root {
     --color-cadmium-red: #D80026;
     --color-alabama-crimson: #AA001E;
-    --color-blue: #308af1;
+    --color-blue: #cccccc;
     --color-selective-yellow: #FDBB01;
     --color-desert-sand: #E3C4A6;
     --font-heading: 'Bebas Neue', Arial, Helvetica, sans-serif;
@@ -71,7 +71,7 @@ input {
 p{
   font-family: var(----font-p);
   font-size: 2rem;
-  color: rebeccapurple;
+  color: #272020;
   font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
   font-style: italic;
 

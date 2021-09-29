@@ -4,7 +4,7 @@ export const LoggedinContext = React.createContext();
 
 const initialState = {
   login: false,
-  userInfo: {},
+  friendsList: [],
 };
 
 function reducer(state, action) {
@@ -15,11 +15,14 @@ function reducer(state, action) {
         login: true,
       };
     }
-    case "userdata": {
+    case "friends-list": {
       return {
         ...state,
-        userInfo: action.userData,
+        friendsList: action.friends,
       };
+    }
+    default: {
+      return;
     }
   }
 }
@@ -31,8 +34,8 @@ export const LoggedInProvider = ({ children }) => {
   const loginUser = (login) => {
     dispatch({ type: "loggedin", login });
   };
-  const getUserInfo = (userData) => {
-    dispatch({ type: "userdata", userData });
+  const getFriends = (friends) => {
+    dispatch({ type: "friends-list", friends });
   };
 
   return (
@@ -41,7 +44,7 @@ export const LoggedInProvider = ({ children }) => {
         state,
         actions: {
           loginUser,
-          getUserInfo,
+          getFriends,
         },
       }}
     >

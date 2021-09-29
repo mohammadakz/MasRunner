@@ -3,12 +3,11 @@ import styled from "styled-components";
 import { useHistory } from "react-router-dom";
 import { LoggedinContext } from "./Context/UserContext";
 import LeaderBoard from "./LeaderBoard";
-
+import Example from "./Calender";
 const Home = () => {
   const history = useHistory();
   const {
-    state: { userInfo },
-    actions: { loginUser, getUserInfo },
+    actions: { loginUser },
   } = React.useContext(LoggedinContext);
   React.useEffect(() => {
     if (window.location.hash) {
@@ -20,6 +19,8 @@ const Home = () => {
       })
         .then((res) => res.json())
         .then((data) => {
+          console.log("data", data);
+          window.localStorage.setItem("userId", data.user.encodedId);
           fetch("/user", {
             method: "POST",
             body: JSON.stringify(data),
@@ -68,12 +69,17 @@ const MainDiv = styled.div`
 `;
 
 const StyledLeaderBoard = styled.div`
+  border-radius: 5rem;
   flex: 1;
   font-size: 2.8rem;
   height: 40vh;
-  background: white;
-  border: 10px solid blue;
+  background: #e0e0e0;
   margin: 2rem 2rem;
+  overflow: scroll;
+  scroll-behavior: smooth;
+  ::-webkit-scrollbar {
+    display: none;
+  }
 `;
 
 const StyledTopPaths = styled(StyledLeaderBoard)`
@@ -85,10 +91,7 @@ const StyledMap = styled.div`
   flex: 1;
   font-size: 2.8rem;
   height: 80vh;
-  background: white;
-  border: 10px solid blue;
+  background: #e0e0e0;
   margin: 2rem 2rem;
 `;
 export default Home;
-
-// "#access_token=eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIyM0JDVFQiLCJzdWIiOiI5TEdESjMiLCJpc3MiOiJGaXRiaXQiLCJ0eXAiOiJhY2Nlc3NfdG9rZW4iLCJzY29wZXMiOiJyc29jIHJzZXQgcmFjdCBybG9jIHJ3ZWkgcmhyIHJwcm8gcm51dCByc2xlIiwiZXhwIjoxNjMyODU2OTEwLCJpYXQiOjE2MzI3NzQ4OTR9.5-sRdPrxcpnLBCivska6Yt4KvhjM1wjY6ESyrRmz_m4&user_id=9LGDJ3&scope=settings+activity+profile+heartrate+location+sleep+nutrition+social+weight&token_type=Bearer&expires_in=82016"

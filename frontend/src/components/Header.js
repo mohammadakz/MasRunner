@@ -4,7 +4,7 @@ import { LoggedinContext } from "./Context/UserContext";
 import { FiLogIn } from "react-icons/fi";
 const Header = () => {
   const {
-    state: { login, userInfo },
+    state: { login },
     actions: { loginUser },
   } = React.useContext(LoggedinContext);
   const clickHandler = (e) => {
@@ -22,7 +22,6 @@ const Header = () => {
     loginUser(!login);
   };
 
-  console.log("userInfo", userInfo);
   return (
     <Wrapper>
       <StyledTitle>MasRunner</StyledTitle>
