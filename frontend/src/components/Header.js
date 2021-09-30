@@ -18,6 +18,7 @@ const Header = () => {
     //   localStorage.setItem("acc", "");
     // }
     loginUser(true);
+    console.log("test");
   };
 
   return (
