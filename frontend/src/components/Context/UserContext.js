@@ -6,6 +6,7 @@ const initialState = {
   login: false,
   friendsList: [],
   pastLocation: [],
+  walkPerDay: [],
 };
 
 function reducer(state, action) {
@@ -28,6 +29,12 @@ function reducer(state, action) {
         pastLocation: action.path,
       };
     }
+    case "day-walk": {
+      return {
+        ...state,
+        walkPerDay: action.walk,
+      };
+    }
     default: {
       return;
     }
@@ -47,6 +54,9 @@ export const LoggedInProvider = ({ children }) => {
   const getPath = (path) => {
     dispatch({ type: "get-path", path });
   };
+  const getWalkPerDay = (walk) => {
+    dispatch({ type: "day-walk", walk });
+  };
 
   return (
     <LoggedinContext.Provider
@@ -56,6 +66,7 @@ export const LoggedInProvider = ({ children }) => {
           loginUser,
           getFriends,
           getPath,
+          getWalkPerDay,
         },
       }}
     >

@@ -46,15 +46,21 @@ const Map = () => {
   };
   const WrappedMap = withScriptjs(withGoogleMap(googleMap));
 
-  return (
-    <div style={{ width: "50vw", height: "50vh" }}>
+  return walkPath.length ? (
+    <div style={{ width: "100%", height: "80vh" }}>
       <WrappedMap
         googleMapURL={`https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places&key=${API_KEY}`}
-        loadingElement={<div style={{ height: `100%` }} />}
-        containerElement={<div style={{ height: `100%` }} />}
-        mapElement={<div style={{ height: `100%` }} />}
+        loadingElement={
+          <div style={{ height: `100%`, borderRadius: "5rem" }} />
+        }
+        containerElement={
+          <div style={{ height: `100%`, borderRadius: "5rem" }} />
+        }
+        mapElement={<div style={{ height: `100%`, borderRadius: "5rem" }} />}
       />
     </div>
+  ) : (
+    "loading"
   );
 };
 

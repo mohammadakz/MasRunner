@@ -124,8 +124,8 @@ const UserSteps = styled.p`
 
 const ChartDiv = styled.div`
   position: absolute;
-  right: 1%;
-  top: 50%;
+  right: 5%;
+  top: 30%;
   transform: translateY(50%);
 `;
 

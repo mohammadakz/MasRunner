@@ -39,7 +39,7 @@ const Home = () => {
       getUserProfile();
     }
     history.push("/");
-  }, [login]);
+  }, []);
 
   React.useEffect(() => {
     if (localStorage.getItem("acc") === "") {
@@ -55,12 +55,10 @@ const Home = () => {
         <StyledLeaderBoard>
           <LeaderBoard />
         </StyledLeaderBoard>
-        <StyledTopPaths>
-          <Map />
-        </StyledTopPaths>
+        <StyledTopPaths>{/* <Map /> */}</StyledTopPaths>
       </MainDiv>
       <StyledMap>
-        <h2>This will be the map</h2>
+        {/* <Map /> */}
       </StyledMap>
     </Wrapper>
   );
@@ -98,9 +96,10 @@ const StyledTopPaths = styled(StyledLeaderBoard)`
 `;
 
 const StyledMap = styled.div`
+  border-radius: 5rem;
+  height: 80vh;
   flex: 1;
   font-size: 2.8rem;
-  height: 80vh;
   background: #e0e0e0;
   margin: 2rem 2rem;
 `;
