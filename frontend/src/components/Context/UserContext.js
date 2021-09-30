@@ -5,6 +5,7 @@ export const LoggedinContext = React.createContext();
 const initialState = {
   login: false,
   friendsList: [],
+  pastLocation: [],
 };
 
 function reducer(state, action) {
@@ -19,6 +20,12 @@ function reducer(state, action) {
       return {
         ...state,
         friendsList: action.friends,
+      };
+    }
+    case "get-path": {
+      return {
+        ...state,
+        pastLocation: action.path,
       };
     }
     default: {
@@ -37,6 +44,9 @@ export const LoggedInProvider = ({ children }) => {
   const getFriends = (friends) => {
     dispatch({ type: "friends-list", friends });
   };
+  const getPath = (path) => {
+    dispatch({ type: "get-path", path });
+  };
 
   return (
     <LoggedinContext.Provider
@@ -45,6 +55,7 @@ export const LoggedInProvider = ({ children }) => {
         actions: {
           loginUser,
           getFriends,
+          getPath,
         },
       }}
     >

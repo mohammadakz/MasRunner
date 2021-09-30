@@ -3,10 +3,13 @@ import styled from "styled-components";
 import { useHistory } from "react-router-dom";
 import { LoggedinContext } from "./Context/UserContext";
 import LeaderBoard from "./LeaderBoard";
-import Example from "./Calender";
+import Map from "./UserLocation/Map";
+import UserActivities from "./UserLocation/UserActivities";
+import UserLocation from "./UserLocation/UserLocation";
 const Home = () => {
   const history = useHistory();
   const {
+    state: { login },
     actions: { loginUser },
   } = React.useContext(LoggedinContext);
   React.useEffect(() => {
@@ -14,40 +17,46 @@ const Home = () => {
       const accToken = window.location.hash.split("&")[0].slice(14);
       window.localStorage.setItem("acc", accToken);
 
-      fetch("https://api.fitbit.com/1/user/-/profile.json", {
-        headers: { Authorization: `Bearer ${accToken}` },
-      })
-        .then((res) => res.json())
-        .then((data) => {
-          console.log("data", data);
-          window.localStorage.setItem("userId", data.user.encodedId);
-          fetch("/user", {
-            method: "POST",
-            body: JSON.stringify(data),
-            headers: {
-              Accept: "application/json",
-              "Content-Type": "application/json",
-            },
+      const getUserProfile = async () => {
+        await fetch("https://api.fitbit.com/1/user/-/profile.json", {
+          headers: { Authorization: `Bearer ${accToken}` },
+        })
+          .then((res) => res.json())
+          .then((data) => {
+            if (accToken) {
+              window.localStorage.setItem("userId", data.user.encodedId);
+            }
+            fetch("/user", {
+              method: "POST",
+              body: JSON.stringify(data),
+              headers: {
+                Accept: "application/json",
+                "Content-Type": "application/json",
+              },
+            });
           });
-        });
+      };
+      getUserProfile();
     }
     history.push("/");
-  }, []);
+  }, [login]);
 
   React.useEffect(() => {
-    if (localStorage.getItem("acc") !== "") {
-      loginUser(true);
+    if (localStorage.getItem("acc") === "") {
+      loginUser(false);
     }
   }, []);
 
   return (
     <Wrapper>
+      {/* <UserActivities /> */}
+      <UserLocation />
       <MainDiv>
         <StyledLeaderBoard>
           <LeaderBoard />
         </StyledLeaderBoard>
         <StyledTopPaths>
-          <h2>Top Paths</h2>
+          <Map />
         </StyledTopPaths>
       </MainDiv>
       <StyledMap>
@@ -83,6 +92,7 @@ const StyledLeaderBoard = styled.div`
 `;
 
 const StyledTopPaths = styled(StyledLeaderBoard)`
+  text-align: center;
   grid-column: 1/2;
   grid-row: 2/3;
 `;

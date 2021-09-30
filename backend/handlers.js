@@ -47,6 +47,44 @@ const postUserInfo = async (req, res) => {
   }
 };
 
+const postUserActivities = async (req, res) => {
+  const client = new MongoClient(MONGO_URI, options);
+  try {
+    const _id = uuidv4();
+    const userInfo = {
+      _id,
+      userId: req.body.userId,
+      activity: req.body.activity,
+    };
+
+    await client.connect();
+    const db = client.db(dbName);
+    const existingUser = await db
+      .collection("usersactivities")
+      .findOne({ userId: `${req.body.userId}` });
+
+    if (existingUser === null) {
+      await db.collection("usersactivities").insertOne(userInfo);
+      sendResponse({
+        res,
+        status: 200,
+        message: "user's activities added to db",
+      });
+      client.close();
+    } else {
+      const newActivities = { $set: { activity: req.body.activity } };
+      await db
+        .collection("usersactivities")
+        .updateOne({ userId: `${req.body.userId}` }, newActivities);
+      sendResponse({ res, status: 300, message: "activity list updated" });
+      client.close();
+    }
+  } catch (err) {
+    sendResponse({ res, status: 400, message: err.message });
+    client.close();
+  }
+};
 module.exports = {
   postUserInfo,
+  postUserActivities,
 };

@@ -7,19 +7,17 @@ const Header = () => {
     state: { login },
     actions: { loginUser },
   } = React.useContext(LoggedinContext);
-  const clickHandler = (e) => {
-    e.preventDefault();
-
-    if (!login) {
+  const clickHandler = () => {
+    if (login === false) {
       window.location.replace(
         "https://www.fitbit.com/oauth2/authorize?client_id=23BCTT&redirect_uri=http://localhost:3000&response_type=token&scope=activity+nutrition+heartrate+location+nutrition+profile+settings+sleep+social+weight&state"
       );
     }
 
-    if (login) {
-      localStorage.setItem("acc", "");
-    }
-    loginUser(!login);
+    // if (login) {
+    //   localStorage.setItem("acc", "");
+    // }
+    loginUser(true);
   };
 
   return (
