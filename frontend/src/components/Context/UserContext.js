@@ -1,12 +1,13 @@
 import React from "react";
+import moment from "moment";
 
 export const LoggedinContext = React.createContext();
-
 const initialState = {
   login: false,
   friendsList: [],
   pastLocation: [],
   walkPerDay: [],
+  selectedDate: "",
 };
 
 function reducer(state, action) {
@@ -35,6 +36,12 @@ function reducer(state, action) {
         walkPerDay: action.walk,
       };
     }
+    case "selected-date": {
+      return {
+        ...state,
+        selectedDate: action.date,
+      };
+    }
     default: {
       return;
     }
@@ -58,6 +65,9 @@ export const LoggedInProvider = ({ children }) => {
     dispatch({ type: "day-walk", walk });
   };
 
+  const getDate = (date) => {
+    dispatch({ typed: "selected-date", date });
+  };
   return (
     <LoggedinContext.Provider
       value={{
@@ -67,6 +77,7 @@ export const LoggedInProvider = ({ children }) => {
           getFriends,
           getPath,
           getWalkPerDay,
+          getDate,
         },
       }}
     >

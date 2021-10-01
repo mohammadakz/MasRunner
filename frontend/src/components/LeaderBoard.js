@@ -3,9 +3,14 @@ import styled from "styled-components";
 import { v4 as uuidv4 } from "uuid";
 import Calender from "./Calender";
 import UserChart from "./UserChart";
+import moment from "moment";
 
 const LeaderBoard = () => {
+  const todayDate = moment(new Date()).format("YYYY-MM-DD");
+
   const [friendsList, setFriendsList] = React.useState([]);
+  const [date, setDate] = React.useState(todayDate);
+
   const [loading, setLoading] = React.useState(true);
   const userId = localStorage.getItem("userId");
   const accToken = localStorage.getItem("acc");
@@ -41,7 +46,7 @@ const LeaderBoard = () => {
   ) : (
     <FriendsLeaderBoard>
       <h1>Leader Board</h1>
-      <Calender />
+      <Calender setDate={setDate} date={date} />
 
       <div>
         {friendsList.included.map((friend, index) => {
@@ -86,7 +91,7 @@ const LeaderBoard = () => {
         })}
       </div>
       <ChartDiv>
-        <UserChart />
+        <UserChart date={date} />
       </ChartDiv>
     </FriendsLeaderBoard>
   );

@@ -2,15 +2,21 @@ import React from "react";
 import TextField from "@material-ui/core/TextField";
 import styled from "styled-components";
 
-const Calender = () => {
+const Calender = ({ date, setDate }) => {
+  const handleChangeDate = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setDate(e.target.value);
+  };
   return (
     <StyledCalender>
       <h3>Select a date</h3>
       <TextField
+        onChange={handleChangeDate}
+        defaultValue={date}
         id="date"
         type="date"
-        // defaultValue="2017-05-24"
-        inputProps={{ style: { fontSize: 12} }} // font size of input text
+        inputProps={{ style: { fontSize: 12 } }}
         InputLabelProps={{
           shrink: true,
         }}

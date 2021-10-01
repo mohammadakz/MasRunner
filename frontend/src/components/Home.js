@@ -58,7 +58,7 @@ const Home = () => {
         <StyledTopPaths>{/* <Map /> */}</StyledTopPaths>
       </MainDiv>
       <StyledMap>
-        {/* <Map /> */}
+        <Map />
       </StyledMap>
     </Wrapper>
   );
