@@ -5,29 +5,45 @@ import {
   withGoogleMap,
   Polyline,
 } from "react-google-maps";
+import NullMap from "./EmptyMap";
 import { LoggedinContext } from "../Context/UserContext";
-let walkPath = [];
+// let walkPath = [];
 //
 const API_KEY = process.env.REACT_APP_GOOGLE_KEY;
+
+//
 const Map = () => {
+  const [walkPath, setWalkPath] = React.useState([]);
+
   const {
     state: { pastLocation },
   } = React.useContext(LoggedinContext);
-  Object.values(pastLocation).map((item) => {
-    walkPath.push({
-      lat: Number(item.lat),
-      lng: Number(item.lng),
+
+  React.useEffect(() => {
+    const userPath = [];
+    console.log("PAST LOCATION", pastLocation);
+
+    Object.values(pastLocation).forEach((item) => {
+      userPath.push({
+        lat: Number(item.lat),
+        lng: Number(item.lng),
+      });
     });
-  });
+
+    setWalkPath(userPath);
+  }, [pastLocation]);
+
+  //
+  console.log("walkpath", walkPath);
+  //
   const googleMap = () => {
     return (
       <GoogleMap
-        defaultZoom={12}
+        defaultZoom={15}
         defaultCenter={{ lat: 45.49474477767944, lng: -73.58054399490356 }}
       >
         <Polyline
           path={walkPath}
-          // path={path}
           geodesic={true}
           options={{
             strokeColor: "#ff2527",
@@ -60,7 +76,7 @@ const Map = () => {
       />
     </div>
   ) : (
-    "loading"
+    <NullMap />
   );
 };
 

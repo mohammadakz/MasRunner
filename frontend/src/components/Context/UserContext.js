@@ -1,5 +1,6 @@
 import React from "react";
 import moment from "moment";
+const todayDate = moment(new Date()).format("YYYY-MM-DD");
 
 export const LoggedinContext = React.createContext();
 const initialState = {
@@ -7,7 +8,8 @@ const initialState = {
   friendsList: [],
   pastLocation: [],
   walkPerDay: [],
-  selectedDate: "",
+  selectedDate: todayDate,
+  selectedActivityLogs: [],
 };
 
 function reducer(state, action) {
@@ -42,6 +44,12 @@ function reducer(state, action) {
         selectedDate: action.date,
       };
     }
+    case "activity-log": {
+      return {
+        ...state,
+        selectedActivityLogs: action.logArray,
+      };
+    }
     default: {
       return;
     }
@@ -66,7 +74,11 @@ export const LoggedInProvider = ({ children }) => {
   };
 
   const getDate = (date) => {
-    dispatch({ typed: "selected-date", date });
+    dispatch({ type: "selected-date", date });
+  };
+
+  const getActivityLog = (logArray) => {
+    dispatch({ type: "activity-log", logArray });
   };
   return (
     <LoggedinContext.Provider
@@ -78,6 +90,7 @@ export const LoggedInProvider = ({ children }) => {
           getPath,
           getWalkPerDay,
           getDate,
+          getActivityLog,
         },
       }}
     >

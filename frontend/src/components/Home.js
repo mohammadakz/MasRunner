@@ -9,7 +9,6 @@ import UserLocation from "./UserLocation/UserLocation";
 const Home = () => {
   const history = useHistory();
   const {
-    state: { login },
     actions: { loginUser },
   } = React.useContext(LoggedinContext);
   React.useEffect(() => {
@@ -49,7 +48,7 @@ const Home = () => {
 
   return (
     <Wrapper>
-      {/* <UserActivities /> */}
+      <UserActivities />
       <UserLocation />
       <MainDiv>
         <StyledLeaderBoard>

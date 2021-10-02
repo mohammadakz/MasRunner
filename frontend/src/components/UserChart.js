@@ -2,16 +2,15 @@ import React from "react";
 import Chart from "react-google-charts";
 import { LoggedinContext } from "./Context/UserContext";
 
-const UserChart = ({ date }) => {
+const UserChart = () => {
   const {
-    state: { walkPerDay },
+    state: { walkPerDay, selectedDate },
     actions: { getWalkPerDay },
   } = React.useContext(LoggedinContext);
   const accToken = localStorage.getItem("acc");
-
   React.useEffect(() => {
     fetch(
-      `https://api.fitbit.com//1/user/9LGDJ3/activities/distance/date/${date}/1d.json`,
+      `https://api.fitbit.com//1/user/9LGDJ3/activities/distance/date/${selectedDate}/1d.json`,
       {
         headers: {
           Authorization: `Bearer ${accToken}`,
@@ -20,9 +19,10 @@ const UserChart = ({ date }) => {
     )
       .then((res) => res.json())
       .then((data) => {
+        console.log("data", data);
         getWalkPerDay(data["activities-distance-intraday"].dataset);
       });
-  }, [date]);
+  }, [selectedDate]);
   const dataW = [];
   let sum = 0;
   let time = 0;

@@ -4,7 +4,6 @@ import { BrowserRouter, Switch, Route } from "react-router-dom";
 import GlobalStyles from "./GlobalStyles";
 import Home from "./Home";
 import Header from "./Header";
-import Auth from "./Auth";
 
 const App = () => {
   return (
@@ -16,9 +15,9 @@ const App = () => {
           <Route exact path="/">
             <Home />
           </Route>
-          <Route exact path="/auth">
+          {/* <Route exact path="/auth">
             <Auth />
-          </Route>
+          </Route> */}
         </Switch>
       </Main>
     </BrowserRouter>
