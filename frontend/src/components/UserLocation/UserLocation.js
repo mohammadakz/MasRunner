@@ -4,51 +4,47 @@ import { LoggedinContext } from "../Context/UserContext";
 const UserLocation = () => {
   const accToken = localStorage.getItem("acc");
   const {
-    state: { selectedActivityLogs },
+    state: { selectedActivityLogs, selectedDate },
     actions: { getPath },
   } = React.useContext(LoggedinContext);
-  React.useEffect(() => {
-    const pathArray = [];
+  const pathArray = [];
+  const urls = [];
 
-    if (accToken && selectedActivityLogs.length) {
-      const fetchLocations = async () => {
-        await selectedActivityLogs.map((logid) => {
-          return fetch(
-            `https://api.fitbit.com/1/user/-/activities/${logid.toString()}.tcx?includePartialTCX=true`,
-            {
-              headers: {
-                Authorization: `Bearer ${accToken}`,
-              },
-            }
-          )
-            .then((response) => response.text())
-            .then((str) => {
-              const parser = new DOMParser();
-              const xml = parser.parseFromString(str, "text/xml");
+  selectedActivityLogs.forEach((logid) => {
+    urls.push(
+      `https://api.fitbit.com/1/user/-/activities/${logid.toString()}.tcx?includePartialTCX=true`
+    );
+  });
 
-              const LatitudeDegrees = Object.values(
-                xml.getElementsByTagName("LatitudeDegrees")
-              );
-              // console.log("LatitudeDegrees", LatitudeDegrees);
+  const getData = (urls) =>
+    fetch(urls, {
+      headers: {
+        Authorization: `Bearer ${accToken}`,
+      },
+    })
+      .then((res) => res.text())
+      .then((str) => {
+        const parser = new DOMParser();
+        const xml = parser.parseFromString(str, "text/xml");
 
-              const LongitudeDegrees = Object.values(
-                xml.getElementsByTagName("LongitudeDegrees")
-              );
-              LatitudeDegrees.map((loc, index) => {
-                pathArray.push({
-                  lat: LatitudeDegrees[index].textContent,
-                  lng: LongitudeDegrees[index].textContent,
-                });
-              });
-              console.log("PATHARRAY", pathArray);
-              getPath(pathArray);
-            });
+        const LatitudeDegrees = Object.values(
+          xml.getElementsByTagName("LatitudeDegrees")
+        );
+        const LongitudeDegrees = Object.values(
+          xml.getElementsByTagName("LongitudeDegrees")
+        );
+        LatitudeDegrees.forEach((loc, index) => {
+          pathArray.push({
+            lat: LatitudeDegrees[index].textContent,
+            lng: LongitudeDegrees[index].textContent,
+          });
         });
-      };
-      fetchLocations();
-    } else {
-      getPath([]);
-    }
+      });
+  React.useEffect(() => {
+    Promise.all(urls.map(getData)).then(() => {
+      console.log(pathArray);
+      getPath(pathArray);
+    });
   }, [selectedActivityLogs]);
   return <></>;
 };

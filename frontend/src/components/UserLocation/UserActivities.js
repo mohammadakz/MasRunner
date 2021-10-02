@@ -36,6 +36,7 @@ const UserActivities = () => {
                 userActivities.push(activityInfo);
               }
             });
+            console.log(activityLogs);
             getActivityLog(activityLogs);
             const activityInfo = {
               userId,
