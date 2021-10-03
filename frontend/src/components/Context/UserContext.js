@@ -10,6 +10,7 @@ const initialState = {
   walkPerDay: [],
   selectedDate: todayDate,
   selectedActivityLogs: [],
+  selectedActivityLogsDate: [],
 };
 
 function reducer(state, action) {
@@ -50,6 +51,13 @@ function reducer(state, action) {
         selectedActivityLogs: action.logArray,
       };
     }
+    case "log-date": {
+      return {
+        ...state,
+        selectedActivityLogsDate: action.dateArray,
+      };
+    }
+
     default: {
       return;
     }
@@ -80,6 +88,11 @@ export const LoggedInProvider = ({ children }) => {
   const getActivityLog = (logArray) => {
     dispatch({ type: "activity-log", logArray });
   };
+
+  const getLogDate = (dateArray) => {
+    dispatch({ type: "log-date", dateArray });
+  };
+
   return (
     <LoggedinContext.Provider
       value={{
@@ -91,6 +104,7 @@ export const LoggedInProvider = ({ children }) => {
           getWalkPerDay,
           getDate,
           getActivityLog,
+          getLogDate,
         },
       }}
     >

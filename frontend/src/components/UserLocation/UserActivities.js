@@ -5,12 +5,13 @@ import { LoggedinContext } from "../Context/UserContext";
 const UserActivities = () => {
   const {
     state: { selectedDate },
-    actions: { getActivityLog },
+    actions: { getActivityLog, getLogDate },
   } = React.useContext(LoggedinContext);
   const accToken = localStorage.getItem("acc");
   const userId = localStorage.getItem("userId");
   const userActivities = [];
   const activityLogs = [];
+  const logDate = [];
 
   React.useEffect(() => {
     if (accToken) {
@@ -28,6 +29,7 @@ const UserActivities = () => {
             data.activities.map((activity) => {
               if (activity.activityName === "Walk") {
                 activityLogs.push(activity.logId);
+                logDate.push(activity.lastModified);
                 const activityInfo = {
                   duration: activity.activeDuration,
                   distance: activity.distance,
@@ -36,8 +38,8 @@ const UserActivities = () => {
                 userActivities.push(activityInfo);
               }
             });
-            console.log(activityLogs);
             getActivityLog(activityLogs);
+            getLogDate(logDate);
             const activityInfo = {
               userId,
               activity: data.activities,
@@ -52,6 +54,7 @@ const UserActivities = () => {
             });
           } else {
             getActivityLog([]);
+            getLogDate([]);
           }
         });
     }

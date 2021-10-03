@@ -15,7 +15,6 @@ const Header = () => {
     }
 
     loginUser(true);
-    console.log("test");
   };
 
   return (

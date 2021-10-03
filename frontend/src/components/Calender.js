@@ -18,7 +18,6 @@ const Calender = () => {
           onChange={(e) => {
             setDate(e.target.value);
           }}
-          defaultValue={todayDate}
           id="date"
           type="date"
           inputProps={{ style: { fontSize: 12 } }}

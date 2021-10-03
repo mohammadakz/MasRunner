@@ -7,56 +7,84 @@ import {
 } from "react-google-maps";
 import NullMap from "./EmptyMap";
 import { LoggedinContext } from "../Context/UserContext";
-// let walkPath = [];
-//
+
 const API_KEY = process.env.REACT_APP_GOOGLE_KEY;
 
-//
 const Map = () => {
-  const [walkPath, setWalkPath] = React.useState([]);
-
+  let uniqueWalkingDate;
+  //States
   const {
-    state: { pastLocation },
+    state: { pastLocation, selectedDate },
+    actions: { getColor },
   } = React.useContext(LoggedinContext);
-
+  const [walkPath, setWalkPath] = React.useState([]);
+  const [allPaths, setAllPaths] = React.useState([]);
+  //useEffect for every pastlocation
   React.useEffect(() => {
     const userPath = [];
-    console.log("PAST LOCATION", pastLocation);
-
+    const allWalkingDate = [];
+    const allPathArray = [];
     Object.values(pastLocation).forEach((item) => {
+      allWalkingDate.push(item.time);
+
+      //Array of uniqe dates
+      uniqueWalkingDate = allWalkingDate.filter(
+        (x, y) => allWalkingDate.indexOf(x) == y
+      );
+
       userPath.push({
         lat: Number(item.lat),
         lng: Number(item.lng),
       });
     });
+    allWalkingDate
+      .filter((x, y) => allWalkingDate.indexOf(x) == y)
+      .forEach((ite, id) => {
+        allPathArray.push({ time: ite, loc: [] });
+      });
+    allPathArray.forEach((it) => {
+      Object.values(pastLocation).forEach((i) => {
+        if (i.time === it.time) {
+          it.loc.push({
+            lat: Number(i.lat),
+            lng: Number(i.lng),
+          });
+        }
+      });
+    });
 
-    setWalkPath(userPath);
+    if (pastLocation.length) {
+      setWalkPath(userPath);
+      setAllPaths(allPathArray);
+    }
   }, [pastLocation]);
 
-  //
-  console.log("walkpath", walkPath);
-  //
   const googleMap = () => {
     return (
       <GoogleMap
         defaultZoom={15}
         defaultCenter={{ lat: 45.49474477767944, lng: -73.58054399490356 }}
       >
-        <Polyline
-          path={walkPath}
-          geodesic={true}
-          options={{
-            strokeColor: "#ff2527",
-            strokeOpacity: 0.75,
-            strokeWeight: 8,
-            icons: [
-              {
-                offset: "0",
-                repeat: "20px",
-              },
-            ],
-          }}
-        />
+        {allPaths.map((t, index) => {
+          const randomColor = Math.floor(Math.random() * 16777215).toString(16);
+          return (
+            <Polyline
+              path={t.loc}
+              geodesic={true}
+              options={{
+                strokeColor: `#${randomColor}`,
+                strokeOpacity: 0.75,
+                strokeWeight: 8,
+                icons: [
+                  {
+                    offset: "0",
+                    repeat: "20px",
+                  },
+                ],
+              }}
+            />
+          );
+        })}
       </GoogleMap>
     );
   };

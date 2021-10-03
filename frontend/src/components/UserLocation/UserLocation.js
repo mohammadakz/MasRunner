@@ -33,16 +33,19 @@ const UserLocation = () => {
         const LongitudeDegrees = Object.values(
           xml.getElementsByTagName("LongitudeDegrees")
         );
-        LatitudeDegrees.forEach((loc, index) => {
-          pathArray.push({
-            lat: LatitudeDegrees[index].textContent,
-            lng: LongitudeDegrees[index].textContent,
+        const walkingTime = Object.values(xml.getElementsByTagName("Time"));
+        if (LongitudeDegrees.length > 100) {
+          LatitudeDegrees.forEach((loc, index) => {
+            pathArray.push({
+              lat: LatitudeDegrees[index].textContent,
+              lng: LongitudeDegrees[index].textContent,
+              time: walkingTime[index].textContent.split("T")[0],
+            });
           });
-        });
+        }
       });
   React.useEffect(() => {
     Promise.all(urls.map(getData)).then(() => {
-      console.log(pathArray);
       getPath(pathArray);
     });
   }, [selectedActivityLogs]);
