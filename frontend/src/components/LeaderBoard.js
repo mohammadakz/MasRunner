@@ -10,6 +10,7 @@ const LeaderBoard = () => {
   const userId = localStorage.getItem("userId");
   const accToken = localStorage.getItem("acc");
   const FriendsSteps = [];
+
   React.useEffect(() => {
     if (userId && accToken) {
       fetch(
@@ -36,11 +37,12 @@ const LeaderBoard = () => {
       });
     });
   }
+
   return loading ? (
-    <div>Loading</div>
+    <LoginState>Please Login its more fun!</LoginState>
   ) : (
     <FriendsLeaderBoard>
-      <h1>Leader Board</h1>
+      <h1>LeaderBoard</h1>
       <Calender />
 
       <div>
@@ -55,8 +57,16 @@ const LeaderBoard = () => {
                 </p>
                 <AverageSteps>
                   {FriendsSteps.map((steps) => {
-                    if (steps.user === friend.id) {
-                      return Math.floor(steps.steps["step-average"]);
+                    if (steps.user === friend.id && steps.steps === undefined) {
+                      return (
+                        <span key={uuidv4()} className="lazy">
+                          Very lazy 0!
+                        </span>
+                      );
+                    } else {
+                      if (steps.user === friend.id) {
+                        return Math.floor(steps.steps["step-average"]);
+                      }
                     }
                   })}{" "}
                   average steps
@@ -92,6 +102,11 @@ const LeaderBoard = () => {
   );
 };
 
+const LoginState = styled.div`
+  text-align: center;
+  padding-top: 4rem;
+  font-size: 3rem;
+`;
 const MainDiv = styled.span`
   display: flex;
   margin: 1rem 0rem;
@@ -123,13 +138,17 @@ const UserSteps = styled.p`
 `;
 
 const ChartDiv = styled.div`
-  position: absolute;
-  right: 5%;
-  top: 30%;
+  position: fixed;
+  right: 60vw;
+  top: 10%;
   transform: translateY(50%);
 `;
 
 const AverageSteps = styled.p`
   margin-left: 10%;
+  .lazy {
+    color: red;
+    font-size: 1.8rem;
+  }
 `;
 export default LeaderBoard;

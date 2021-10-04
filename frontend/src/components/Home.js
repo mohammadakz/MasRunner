@@ -6,6 +6,8 @@ import LeaderBoard from "./LeaderBoard";
 import Map from "./UserLocation/Map";
 import UserActivities from "./UserLocation/UserActivities";
 import UserLocation from "./UserLocation/UserLocation";
+import AddFriends from "./AddFriends/AddFriends";
+import AcceptFriends from "./AddFriends/AcceptFriends";
 const Home = () => {
   const history = useHistory();
   const {
@@ -35,29 +37,27 @@ const Home = () => {
             });
           });
       };
+      loginUser(true);
       getUserProfile();
     }
     history.push("/");
   }, []);
 
-  React.useEffect(() => {
-    if (localStorage.getItem("acc") === "") {
-      loginUser(false);
-    }
-  }, []);
-
   return (
     <Wrapper>
-      <UserActivities />
-      <UserLocation />
+      {/* <UserActivities />
+      <UserLocation /> */}
       <MainDiv>
         <StyledLeaderBoard>
           <LeaderBoard />
         </StyledLeaderBoard>
-        <StyledTopPaths>{/* <Map /> */}</StyledTopPaths>
+        <SendFriendReq>
+          <AddFriends />
+          <AcceptFriends />
+        </SendFriendReq>
       </MainDiv>
       <StyledMap>
-        <Map />
+        {/* <Map /> */}
       </StyledMap>
     </Wrapper>
   );
@@ -88,10 +88,21 @@ const StyledLeaderBoard = styled.div`
   }
 `;
 
-const StyledTopPaths = styled(StyledLeaderBoard)`
+const SendFriendReq = styled.div`
+  display: flex;
+  justify-content: space-around;
+  padding: 2rem 0rem;
+  border-radius: 5rem;
+  font-size: 2.8rem;
   text-align: center;
-  grid-column: 1/2;
-  grid-row: 2/3;
+  height: 40vh;
+  background: #e0e0e0;
+  margin: 2rem 2rem;
+  overflow-y: scroll;
+  scroll-behavior: smooth;
+  ::-webkit-scrollbar {
+    display: none;
+  }
 `;
 
 const StyledMap = styled.div`

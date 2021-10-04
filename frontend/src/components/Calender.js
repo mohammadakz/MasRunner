@@ -1,11 +1,9 @@
 import React from "react";
 import TextField from "@material-ui/core/TextField";
 import styled from "styled-components";
-import moment from "moment";
 import { LoggedinContext } from "./Context/UserContext";
 const Calender = () => {
   const [date, setDate] = React.useState("");
-  const todayDate = moment(new Date()).format("YYYY-MM-DD");
   const {
     actions: { getDate },
   } = React.useContext(LoggedinContext);

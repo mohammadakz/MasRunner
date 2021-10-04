@@ -4,7 +4,7 @@ import { LoggedinContext } from "./Context/UserContext";
 
 const UserChart = () => {
   const {
-    state: { walkPerDay, selectedDate, colorState },
+    state: { walkPerDay, selectedDate },
     actions: { getWalkPerDay },
   } = React.useContext(LoggedinContext);
   const accToken = localStorage.getItem("acc");
@@ -19,6 +19,10 @@ const UserChart = () => {
     )
       .then((res) => res.json())
       .then((data) => {
+        console.log(data);
+        if (data["activities-distance"].length < 2) {
+          getWalkPerDay([]);
+        }
         getWalkPerDay(data["activities-distance-intraday"].dataset);
       });
   }, [selectedDate]);
@@ -48,7 +52,7 @@ const UserChart = () => {
           width: "85%",
           height: "85%",
         },
-        colors: ["#8e0114", "#276419"],
+        colors: ["#8e0120", "#276419"],
         pointSize: 2,
         animation: {
           duration: 1000,

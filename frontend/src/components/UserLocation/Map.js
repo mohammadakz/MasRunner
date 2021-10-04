@@ -4,21 +4,23 @@ import {
   withScriptjs,
   withGoogleMap,
   Polyline,
+  Marker,
+  InfoWindow,
 } from "react-google-maps";
 import NullMap from "./EmptyMap";
 import { LoggedinContext } from "../Context/UserContext";
+import { v4 as uuidv4 } from "uuid";
 
 const API_KEY = process.env.REACT_APP_GOOGLE_KEY;
 
 const Map = () => {
-  let uniqueWalkingDate;
   //States
   const {
     state: { pastLocation, selectedDate },
-    actions: { getColor },
   } = React.useContext(LoggedinContext);
   const [walkPath, setWalkPath] = React.useState([]);
   const [allPaths, setAllPaths] = React.useState([]);
+  const [selectedPath, setSelectedPath] = React.useState(null);
   //useEffect for every pastlocation
   React.useEffect(() => {
     const userPath = [];
@@ -26,11 +28,6 @@ const Map = () => {
     const allPathArray = [];
     Object.values(pastLocation).forEach((item) => {
       allWalkingDate.push(item.time);
-
-      //Array of uniqe dates
-      uniqueWalkingDate = allWalkingDate.filter(
-        (x, y) => allWalkingDate.indexOf(x) == y
-      );
 
       userPath.push({
         lat: Number(item.lat),
@@ -65,26 +62,59 @@ const Map = () => {
         defaultZoom={15}
         defaultCenter={{ lat: 45.49474477767944, lng: -73.58054399490356 }}
       >
-        {allPaths.map((t, index) => {
-          const randomColor = Math.floor(Math.random() * 16777215).toString(16);
-          return (
-            <Polyline
-              path={t.loc}
-              geodesic={true}
-              options={{
-                strokeColor: `#${randomColor}`,
-                strokeOpacity: 0.75,
-                strokeWeight: 8,
-                icons: [
-                  {
-                    offset: "0",
-                    repeat: "20px",
-                  },
-                ],
-              }}
-            />
-          );
+        {/* Paths */}
+        {allPaths.map((t) => {
+          if (t.time === selectedDate) {
+            return (
+              <Polyline
+                key={uuidv4()}
+                path={t.loc}
+                geodesic={true}
+                options={{
+                  strokeColor: `#51db6f`,
+                  strokeOpacity: 0.75,
+                  strokeWeight: 8,
+                  icons: [
+                    {
+                      offset: "0",
+                      repeat: "20px",
+                    },
+                  ],
+                }}
+              />
+            );
+          }
         })}
+
+        {/* Marker */}
+        {allPaths.map((te) => {
+          if (te.time === selectedDate) {
+            return (
+              <Marker
+                key={uuidv4()}
+                position={{ lat: te.loc[0].lat, lng: te.loc[0].lng }}
+                onClick={(e) => {
+                  setSelectedPath(te);
+                  return false;
+                }}
+              />
+            );
+          }
+        })}
+        {selectedPath && (
+          <InfoWindow
+            position={{
+              lat: selectedPath.loc[0].lat,
+              lng: selectedPath.loc[0].lng,
+            }}
+            onCloseClick={(e) => {
+              setSelectedPath(null);
+              return false;
+            }}
+          >
+            <div style={{ fontSize: "2rem" }}>{selectedPath.time}</div>
+          </InfoWindow>
+        )}
       </GoogleMap>
     );
   };

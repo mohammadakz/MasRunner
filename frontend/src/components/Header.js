@@ -8,20 +8,29 @@ const Header = () => {
     actions: { loginUser },
   } = React.useContext(LoggedinContext);
   const clickHandler = () => {
+    loginUser(!login);
     if (login === false) {
       window.location.replace(
-        "https://www.fitbit.com/oauth2/authorize?client_id=23BCTT&redirect_uri=http://localhost:3000&response_type=token&scope=activity+nutrition+heartrate+location+nutrition+profile+settings+sleep+social+weight&state"
+        "https://www.fitbit.com/oauth2/authorize?client_id=23BCTT&redirect_uri=http://localhost:3000&response_type=token&scope=activity+nutrition+heartrate+location+nutrition+profile+settings+sleep+social+weight&state&prompt=none"
       );
+    } else {
+      window.localStorage.removeItem("acc");
+      window.localStorage.removeItem("userId");
+      window.location.reload();
     }
-
-    loginUser(true);
   };
+
+  React.useEffect(() => {
+    const acc = localStorage.getItem("acc");
+    if (acc) {
+      loginUser(true);
+    }
+  }, []);
 
   return (
     <Wrapper>
       <StyledTitle>MasRunner</StyledTitle>
       <p>Exercise because you love your body</p>
-
       <StyledButton onClick={clickHandler}>
         <StyledIcon />
         {login ? "LogOut" : "Log in"}

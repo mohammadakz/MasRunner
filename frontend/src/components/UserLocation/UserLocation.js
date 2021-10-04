@@ -4,7 +4,7 @@ import { LoggedinContext } from "../Context/UserContext";
 const UserLocation = () => {
   const accToken = localStorage.getItem("acc");
   const {
-    state: { selectedActivityLogs, selectedDate },
+    state: { selectedActivityLogs },
     actions: { getPath },
   } = React.useContext(LoggedinContext);
   const pathArray = [];
