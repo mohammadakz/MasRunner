@@ -45,8 +45,8 @@ const Home = () => {
 
   return (
     <Wrapper>
-      {/* <UserActivities />
-      <UserLocation /> */}
+      <UserActivities />
+      <UserLocation />
       <MainDiv>
         <StyledLeaderBoard>
           <LeaderBoard />
@@ -57,7 +57,7 @@ const Home = () => {
         </SendFriendReq>
       </MainDiv>
       <StyledMap>
-        {/* <Map /> */}
+        <Map />
       </StyledMap>
     </Wrapper>
   );

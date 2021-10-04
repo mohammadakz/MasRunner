@@ -19,7 +19,6 @@ const UserChart = () => {
     )
       .then((res) => res.json())
       .then((data) => {
-        console.log(data);
         if (data["activities-distance"].length < 2) {
           getWalkPerDay([]);
         }
