@@ -13,7 +13,6 @@ const LeaderBoardNotAuth = () => {
       fetch("/usersteps")
         .then((res) => res.json())
         .then((data) => {
-          console.log("usersteps", data);
           const sortedSteps = data.data.sort((a, b) =>
             a.steps["step-rank"] > b.steps["step-rank"] ? 1 : -1
           );

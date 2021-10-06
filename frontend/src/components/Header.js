@@ -20,12 +20,12 @@ const Header = () => {
     }
   };
 
-  // React.useEffect(() => {
-  //   const acc = localStorage.getItem("acc");
-  //   if (acc) {
-  //     loginUser(true);
-  //   }
-  // }, []);
+  React.useEffect(() => {
+    const acc = localStorage.getItem("acc");
+    if (acc) {
+      loginUser(true);
+    }
+  }, []);
 
   return (
     <Wrapper>

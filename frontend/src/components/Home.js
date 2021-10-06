@@ -63,7 +63,6 @@ const Home = () => {
         .then(() => getUserProfile());
     }
     history.push("/");
-    console.log("login", login);
   }, []);
   return (
     <Wrapper>

@@ -25,7 +25,6 @@ const LeaderBoard = () => {
       )
         .then((res) => res.json())
         .then((data) => {
-          console.log("data users", data);
           setFriendsList(data);
           setLoading(false);
           setUser(userId);
@@ -35,7 +34,6 @@ const LeaderBoard = () => {
       getFriends();
     }
   }, []);
-  console.log("friendsList", friendsList);
   if (!loading) {
     friendsList.data.forEach((item) => {
       if (item.relationships.user.data.id === user) {
@@ -76,7 +74,7 @@ const LeaderBoard = () => {
                   {`${index + 1}) `}
                   {friend.attributes.name}
                 </p>
-                <AverageSteps>
+                <AverageSteps key={uuidv4()}>
                   {friendsSteps.map((steps) => {
                     if (steps.user === friend.id && steps.steps === undefined) {
                       return (
@@ -92,12 +90,14 @@ const LeaderBoard = () => {
                   })}{" "}
                   average steps
                 </AverageSteps>
-                <StepRank>
+                <StepRank key={uuidv4()}>
                   Ranking
                   {friendsSteps.map((steps) => {
                     if (steps.user === friend.id) {
                       return (
-                        <span>{Math.floor(steps.steps["step-rank"])}</span>
+                        <span key={uuidv4()}>
+                          {Math.floor(steps.steps["step-rank"])}
+                        </span>
                       );
                     }
                   })}
@@ -113,7 +113,7 @@ const LeaderBoard = () => {
                   {`${index + 1}) `}
                   YOU
                 </UserSteps>
-                <AverageSteps>
+                <AverageSteps key={uuidv4()}>
                   {friendsSteps.map((steps) => {
                     if (steps.user === friend.id) {
                       return Math.floor(steps.steps["step-average"]);
@@ -126,7 +126,9 @@ const LeaderBoard = () => {
                   {friendsSteps.map((steps) => {
                     if (steps.user === friend.id) {
                       return (
-                        <span>{Math.floor(steps.steps["step-rank"])}</span>
+                        <span key={uuidv4()}>
+                          {Math.floor(steps.steps["step-rank"])}
+                        </span>
                       );
                     }
                   })}

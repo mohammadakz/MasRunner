@@ -43,7 +43,7 @@ const AcceptFriends = () => {
     })
       .then((res) => res.json())
       .then((data) => setFriendReqList(data.included));
-  }, []);
+  }, [login]);
 
   return login ? (
     <>
