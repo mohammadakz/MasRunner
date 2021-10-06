@@ -35,7 +35,7 @@ const Map = () => {
       });
     });
     allWalkingDate
-      .filter((x, y) => allWalkingDate.indexOf(x) == y)
+      .filter((x, y) => allWalkingDate.indexOf(x) === y)
       .forEach((ite, id) => {
         allPathArray.push({ time: ite, loc: [] });
       });

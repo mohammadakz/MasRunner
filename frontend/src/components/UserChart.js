@@ -8,9 +8,11 @@ const UserChart = () => {
     actions: { getWalkPerDay },
   } = React.useContext(LoggedinContext);
   const accToken = localStorage.getItem("acc");
+  const userID = localStorage.getItem("userId");
+
   React.useEffect(() => {
     fetch(
-      `https://api.fitbit.com//1/user/9LGDJ3/activities/distance/date/${selectedDate}/1d.json`,
+      `https://api.fitbit.com//1/user/${userID}/activities/distance/date/${selectedDate}/1d.json`,
       {
         headers: {
           Authorization: `Bearer ${accToken}`,
@@ -21,8 +23,9 @@ const UserChart = () => {
       .then((data) => {
         if (data["activities-distance"].length < 2) {
           getWalkPerDay([]);
+        } else {
+          getWalkPerDay(data["activities-distance-intraday"].dataset);
         }
-        getWalkPerDay(data["activities-distance-intraday"].dataset);
       });
   }, [selectedDate]);
   const dataW = [];

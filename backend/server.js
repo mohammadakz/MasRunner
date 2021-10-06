@@ -3,7 +3,14 @@
 // import the needed node_modules.
 const express = require("express");
 const morgan = require("morgan");
-const { postUserInfo, postUserActivities } = require("./handlers");
+const {
+  postUserInfo,
+  postUserActivities,
+  postUserSteps,
+  getUserSteps,
+  getUserInfo,
+  getUserActivities,
+} = require("./handlers");
 
 express()
   // Below are methods that are included in express(). We chain them for convenience.
@@ -22,6 +29,10 @@ express()
   //
   .post("/user", postUserInfo)
   .post("/activities", postUserActivities)
+  .post("/usersteps", postUserSteps)
+  .get("/usersteps", getUserSteps)
+  .get("/user", getUserInfo)
+  .get("/activities", getUserActivities)
 
   //
   // add new endpoints here ☝️

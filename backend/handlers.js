@@ -47,6 +47,43 @@ const postUserInfo = async (req, res) => {
   }
 };
 
+const postUserSteps = async (req, res) => {
+  const client = new MongoClient(MONGO_URI, options);
+  try {
+    const _id = uuidv4();
+    const userSteps = {
+      _id,
+      userId: req.body.userId,
+      steps: req.body.steps,
+    };
+    await client.connect();
+    const db = client.db(dbName);
+    const existingUser = await db
+      .collection("usersteps")
+      .findOne({ userId: `${req.body.userId}` });
+
+    if (existingUser === null) {
+      await db.collection("usersteps").insertOne(userSteps);
+      sendResponse({
+        res,
+        status: 200,
+        message: "user's steps added to db",
+      });
+      client.close();
+    } else {
+      const newSteps = { $set: { steps: req.body.steps } };
+      await db
+        .collection("usersteps")
+        .updateOne({ userId: `${req.body.userId}` }, newSteps);
+      sendResponse({ res, status: 300, message: "steps updated" });
+      client.close();
+    }
+  } catch (err) {
+    sendResponse({ res, status: 400, message: err.message });
+    client.close();
+  }
+};
+
 const postUserActivities = async (req, res) => {
   const client = new MongoClient(MONGO_URI, options);
   try {
@@ -84,7 +121,77 @@ const postUserActivities = async (req, res) => {
     client.close();
   }
 };
+
+const getUserInfo = async (req, res) => {
+  try {
+    const client = await new MongoClient(MONGO_URI, options);
+    await client.connect();
+    const db = client.db(dbName);
+    //
+    const userInfo = await db.collection("users").find().toArray();
+
+    res.status(200).json({
+      status: 200,
+      message: "list of all users",
+      data: userInfo,
+    });
+  } catch (err) {
+    res.status(400).json({
+      status: 400,
+      message: "Error! getting the users",
+    });
+  }
+};
+
+const getUserSteps = async (req, res) => {
+  try {
+    const client = await new MongoClient(MONGO_URI, options);
+    await client.connect();
+    const db = client.db(dbName);
+    //
+    const allSteps = await db.collection("usersteps").find().toArray();
+
+    res.status(200).json({
+      status: 200,
+      message: "list of all users steps",
+      data: allSteps,
+    });
+  } catch (err) {
+    res.status(400).json({
+      status: 400,
+      message: "Error! getting the users steps",
+    });
+  }
+};
+
+const getUserActivities = async (req, res) => {
+  try {
+    const client = await new MongoClient(MONGO_URI, options);
+    await client.connect();
+    const db = client.db(dbName);
+    //
+    const allActivities = await db
+      .collection("usersactivities")
+      .find()
+      .toArray();
+
+    res.status(200).json({
+      status: 200,
+      message: "list of all users activities",
+      data: allActivities,
+    });
+  } catch (err) {
+    res.status(400).json({
+      status: 400,
+      message: "Error! getting the users activities",
+    });
+  }
+};
 module.exports = {
   postUserInfo,
   postUserActivities,
+  postUserSteps,
+  getUserSteps,
+  getUserInfo,
+  getUserActivities,
 };

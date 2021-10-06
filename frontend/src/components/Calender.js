@@ -5,6 +5,7 @@ import { LoggedinContext } from "./Context/UserContext";
 const Calender = () => {
   const [date, setDate] = React.useState("");
   const {
+    state: { selectedDate },
     actions: { getDate },
   } = React.useContext(LoggedinContext);
 
@@ -16,6 +17,7 @@ const Calender = () => {
           onChange={(e) => {
             setDate(e.target.value);
           }}
+          defaultValue={selectedDate}
           id="date"
           type="date"
           inputProps={{ style: { fontSize: 12 } }}

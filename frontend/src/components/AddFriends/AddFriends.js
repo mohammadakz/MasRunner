@@ -1,8 +1,12 @@
 import { TextField } from "@material-ui/core";
 import React from "react";
 import styled from "styled-components";
+import { LoggedinContext } from "../Context/UserContext";
 const accToken = localStorage.getItem("acc");
 const AddFriends = () => {
+  const {
+    state: { login },
+  } = React.useContext(LoggedinContext);
   const [inputValue, setInputValue] = React.useState("");
   const [successReq, setSuccessReq] = React.useState(false);
 
@@ -19,9 +23,9 @@ const AddFriends = () => {
       }
     ).then(setSuccessReq(true));
   };
-  return accToken ? (
+  return login ? (
     <Wrapper>
-      <h1>Working out its more fun with friends!</h1>
+      <h1>MasRunner its more fun with friends!</h1>
 
       <form onSubmit={firiendReqSubmitHandler}>
         <FriendReqDiv>

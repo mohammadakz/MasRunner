@@ -7,12 +7,14 @@ import UserChart from "./UserChart";
 const LeaderBoard = () => {
   const [friendsList, setFriendsList] = React.useState([]);
   const [loading, setLoading] = React.useState(true);
-  const userId = localStorage.getItem("userId");
-  const accToken = localStorage.getItem("acc");
-  const FriendsSteps = [];
+  const [user, setUser] = React.useState("");
 
-  React.useEffect(() => {
-    if (userId && accToken) {
+  const friendsSteps = [];
+
+  React.useEffect(async () => {
+    const userId = await localStorage.getItem("userId");
+    const accToken = await localStorage.getItem("acc");
+    const getFriends = async () => {
       fetch(
         `https://api.fitbit.com/1.1/user/${userId}/leaderboard/friends.json`,
         {
@@ -23,31 +25,50 @@ const LeaderBoard = () => {
       )
         .then((res) => res.json())
         .then((data) => {
+          console.log("data users", data);
           setFriendsList(data);
           setLoading(false);
+          setUser(userId);
         });
+    };
+    if (userId && accToken) {
+      getFriends();
     }
   }, []);
-
+  console.log("friendsList", friendsList);
   if (!loading) {
-    friendsList.data.map((item) => {
-      FriendsSteps.push({
+    friendsList.data.forEach((item) => {
+      if (item.relationships.user.data.id === user) {
+        fetch("/usersteps", {
+          method: "POST",
+          body: JSON.stringify({
+            userId: user,
+            steps: item.attributes,
+          }),
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+          },
+        });
+      }
+      friendsSteps.push({
         user: item.relationships.user.data.id,
         steps: item.attributes,
       });
     });
   }
-
   return loading ? (
-    <LoginState>Please Login its more fun!</LoginState>
+    <></>
   ) : (
     <FriendsLeaderBoard>
-      <h1>LeaderBoard</h1>
-      <Calender />
+      <HeaderDiv>
+        <h1>LeaderBoard</h1>
+        <Calender />
+      </HeaderDiv>
 
       <div>
         {friendsList.included.map((friend, index) => {
-          if (friend.id !== userId) {
+          if (friend.id !== user) {
             return (
               <MainDiv key={uuidv4()}>
                 <img src={friend.attributes.avatar} alt="" />
@@ -56,7 +77,7 @@ const LeaderBoard = () => {
                   {friend.attributes.name}
                 </p>
                 <AverageSteps>
-                  {FriendsSteps.map((steps) => {
+                  {friendsSteps.map((steps) => {
                     if (steps.user === friend.id && steps.steps === undefined) {
                       return (
                         <span key={uuidv4()} className="lazy">
@@ -71,6 +92,16 @@ const LeaderBoard = () => {
                   })}{" "}
                   average steps
                 </AverageSteps>
+                <StepRank>
+                  Ranking
+                  {friendsSteps.map((steps) => {
+                    if (steps.user === friend.id) {
+                      return (
+                        <span>{Math.floor(steps.steps["step-rank"])}</span>
+                      );
+                    }
+                  })}
+                </StepRank>
               </MainDiv>
             );
           } else {
@@ -83,21 +114,31 @@ const LeaderBoard = () => {
                   YOU
                 </UserSteps>
                 <AverageSteps>
-                  {FriendsSteps.map((steps) => {
+                  {friendsSteps.map((steps) => {
                     if (steps.user === friend.id) {
                       return Math.floor(steps.steps["step-average"]);
                     }
                   })}{" "}
                   average steps
                 </AverageSteps>
+                <StepRank>
+                  Ranking
+                  {friendsSteps.map((steps) => {
+                    if (steps.user === friend.id) {
+                      return (
+                        <span>{Math.floor(steps.steps["step-rank"])}</span>
+                      );
+                    }
+                  })}
+                </StepRank>
               </MainDiv>
             );
           }
         })}
       </div>
-      <ChartDiv>
-        <UserChart />
-      </ChartDiv>
+      {/* <ChartDiv>
+      <UserChart />
+    </ChartDiv> */}
     </FriendsLeaderBoard>
   );
 };
@@ -110,6 +151,9 @@ const LoginState = styled.div`
 const MainDiv = styled.span`
   display: flex;
   margin: 1rem 0rem;
+  text-align: center;
+  align-items: center;
+  justify-content: space-evenly;
   img {
     width: 5%;
     border-radius: 50%;
@@ -119,6 +163,7 @@ const MainDiv = styled.span`
 const FriendsLeaderBoard = styled.div`
   position: relative;
   text-align: center;
+  justify-content: center;
   display: flex;
   flex-direction: column;
   padding: 2rem;
@@ -151,4 +196,13 @@ const AverageSteps = styled.p`
     font-size: 1.8rem;
   }
 `;
+
+const StepRank = styled(AverageSteps)`
+  span {
+    margin-left: 1rem;
+    font-size: 2rem;
+  }
+`;
+
+const HeaderDiv = styled.div``;
 export default LeaderBoard;

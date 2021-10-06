@@ -11,7 +11,6 @@ const initialState = {
   selectedDate: todayDate,
   selectedActivityLogs: [],
   selectedActivityLogsDate: [],
-  loading: null,
 };
 
 function reducer(state, action) {
@@ -59,13 +58,6 @@ function reducer(state, action) {
       };
     }
 
-    case "loading": {
-      return {
-        ...state,
-        loading: action.load,
-      };
-    }
-
     default: {
       return;
     }
@@ -101,10 +93,6 @@ export const LoggedInProvider = ({ children }) => {
     dispatch({ type: "log-date", dateArray });
   };
 
-  const setLoading = (load) => {
-    dispatch({ type: "loading", load });
-  };
-
   return (
     <LoggedinContext.Provider
       value={{
@@ -117,7 +105,6 @@ export const LoggedInProvider = ({ children }) => {
           getDate,
           getActivityLog,
           getLogDate,
-          setLoading,
         },
       }}
     >

@@ -1,7 +1,11 @@
 import React from "react";
 import styled from "styled-components";
 import { v4 as uuidv4 } from "uuid";
+import { LoggedinContext } from "../Context/UserContext";
 const AcceptFriends = () => {
+  const {
+    state: { login },
+  } = React.useContext(LoggedinContext);
   const [friendReqList, setFriendReqList] = React.useState([]);
   const accToken = localStorage.getItem("acc");
   const acceptHandler = (e, id) => {
@@ -41,7 +45,7 @@ const AcceptFriends = () => {
       .then((data) => setFriendReqList(data.included));
   }, []);
 
-  return accToken ? (
+  return login ? (
     <>
       <Wrapper>
         <h1>List of Friend Requests</h1>
@@ -75,12 +79,14 @@ const AcceptFriends = () => {
             })}
           </StyledAccRejButton>
         ) : (
-          <Notification>You dont have any pending friend requests!</Notification>
+          <Notification>
+            You dont have any pending friend requests!
+          </Notification>
         )}
       </Wrapper>
     </>
   ) : (
-    <LoginState>I said login (╯°□°）╯︵ ┻━┻</LoginState>
+    <LoginState>MasRunner is more fun with friends (╯°□°）╯︵ ┻━┻</LoginState>
   );
 };
 
