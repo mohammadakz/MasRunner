@@ -93,10 +93,20 @@ const LeaderBoard = () => {
                 <StepRank key={uuidv4()}>
                   Ranking
                   {friendsSteps.map((steps) => {
-                    if (steps.user === friend.id) {
+                    console.log(steps);
+                    if (steps.user === friend.id && steps.steps !== undefined) {
                       return (
                         <span key={uuidv4()}>
                           {Math.floor(steps.steps["step-rank"])}
+                        </span>
+                      );
+                    } else if (
+                      steps.user === friend.id &&
+                      steps.steps === undefined
+                    ) {
+                      return (
+                        <span key={uuidv4()} className="lazy">
+                          -100
                         </span>
                       );
                     }
@@ -109,7 +119,7 @@ const LeaderBoard = () => {
               <MainDiv key={uuidv4()}>
                 <img src={friend.attributes.avatar} alt="" />
 
-                <UserSteps>
+                <UserSteps className="user">
                   {`${index + 1}) `}
                   YOU
                 </UserSteps>
@@ -138,18 +148,10 @@ const LeaderBoard = () => {
           }
         })}
       </div>
-      {/* <ChartDiv>
-      <UserChart />
-    </ChartDiv> */}
     </FriendsLeaderBoard>
   );
 };
 
-const LoginState = styled.div`
-  text-align: center;
-  padding-top: 4rem;
-  font-size: 3rem;
-`;
 const MainDiv = styled.span`
   display: flex;
   margin: 1rem 0rem;
@@ -160,6 +162,15 @@ const MainDiv = styled.span`
     width: 5%;
     border-radius: 50%;
     margin-right: 1rem;
+  }
+  p {
+    color: white;
+  }
+  span {
+    color: white;
+  }
+  .user {
+    color: #4e4e50;
   }
 `;
 const FriendsLeaderBoard = styled.div`

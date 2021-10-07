@@ -75,7 +75,7 @@ const LeaderBoardNotAuth = () => {
                 average steps
               </AverageSteps>
               <UserID>
-                UserID
+                UserID{" "}
                 {userSteps.map((steps, index) => {
                   if (steps.userId === user.userId) {
                     return <span key={uuidv4()}>{steps.userId}</span>;
@@ -121,7 +121,8 @@ const FriendsLeaderBoard = styled.div`
     padding-bottom: 2rem;
   }
   p {
-    padding-top: 2rem;
+    padding-top: 2.5rem;
+    color: white;
   }
 `;
 

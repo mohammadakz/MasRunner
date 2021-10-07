@@ -52,6 +52,9 @@ const AddFriends = () => {
 };
 const Wrapper = styled.div`
   font-size: 3rem;
+  form {
+    color: white;
+  }
 `;
 const FriendReqDiv = styled.div`
   padding: 2rem 1rem;

@@ -40,33 +40,37 @@ const Header = () => {
 };
 
 const Wrapper = styled.div`
+  background: #cccccc;
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 2rem;
   height: 5vh;
   width: 100vw;
+  p {
+    font-size: 2.5rem;
+  }
 `;
 
 const StyledTitle = styled.h1`
   font-size: 2.4rem;
-  color: #308af1;
+  color: #950740;
   font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
 `;
 
 const StyledButton = styled.button`
-  color: #308af1;
+  color: #950740;
   font-family: var(--font-heading);
   font-size: 1.8rem;
   text-align: center;
-  border: 0.2rem solid #308af1;
+  border: 0.2rem solid #950740;
   border-radius: 0.5rem;
   background: none;
   align-items: center;
   padding: 1rem;
   cursor: pointer;
   &:hover {
-    background: #308af1;
+    background: #950740;
     color: white;
     transition: 0.2s ease-in-out all;
   }

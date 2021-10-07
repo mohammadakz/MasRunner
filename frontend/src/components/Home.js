@@ -100,7 +100,8 @@ const StyledLeaderBoard = styled.div`
   flex: 1;
   font-size: 2.8rem;
   height: 40vh;
-  background: #e0e0e0;
+  background: #c3073f;
+  color: white;
   margin: 2rem 2rem;
   overflow: scroll;
   scroll-behavior: smooth;
@@ -120,7 +121,8 @@ const SendFriendReq = styled.div`
   font-size: 2.8rem;
   text-align: center;
   height: 40vh;
-  background: #e0e0e0;
+  background: #c3073f;
+  color: white;
   margin: 2rem 2rem;
   overflow-y: scroll;
   scroll-behavior: smooth;

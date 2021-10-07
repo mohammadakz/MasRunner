@@ -4,7 +4,7 @@ export default createGlobalStyle`
   :root {
     --color-cadmium-red: #D80026;
     --color-alabama-crimson: #AA001E;
-    --color-blue: #cccccc;
+    --color-blue: #1A1A1D;
     --color-selective-yellow: #FDBB01;
     --color-desert-sand: #E3C4A6;
     --font-heading: 'Bebas Neue', Arial, Helvetica, sans-serif;
@@ -76,12 +76,4 @@ p{
   font-style: italic;
 
 }
-
-  /* input {
-    font-size: 24px;
-    height: 42px;
-    border: 2px solid var(--color-orange);
-    border-radius: 4px;
-    padding: 0 12px;
-  } */
 `;

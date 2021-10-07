@@ -104,11 +104,15 @@ const NameDiv = styled.div`
     width: 30%;
     border-radius: 50%;
   }
+  p {
+    color: white;
+  }
 `;
 const Wrapper = styled.div`
   font-size: 3rem;
   display: flex;
   flex-direction: column;
+  color: white;
 `;
 const StyledAccRejButton = styled.div`
   padding: 2rem 1rem;

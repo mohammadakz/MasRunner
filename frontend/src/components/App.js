@@ -4,6 +4,7 @@ import { BrowserRouter, Switch, Route } from "react-router-dom";
 import GlobalStyles from "./GlobalStyles";
 import Home from "./Home";
 import Header from "./Header";
+import Footer from "./Footer";
 const App = () => {
   return (
     <BrowserRouter>
@@ -15,6 +16,7 @@ const App = () => {
             <Home />
           </Route>
         </Switch>
+        <Footer />
       </Main>
     </BrowserRouter>
   );
